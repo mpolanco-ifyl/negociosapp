@@ -2,13 +2,13 @@ import streamlit as st
 import openai
 import pandas as pd
 
-# Authenticate OpenAI API key
-openai.api_key = "your_api_key"
+# Pide la clave de API de OpenAI al usuario
+openai.api_key = st.text_input("Introduce tu clave de API de OpenAI:")
 
-# Define function to generate startup idea
-def generate_idea(wish):
-    prompt = f"I wish there's a {wish}"
-    response = openai.Completion.create(
+# Define una función para generar la idea de startup
+def generar_idea(deseo):
+    prompt = f"Quisiera que hubiera {deseo}"
+    respuesta = openai.Completion.create(
         engine="text-davinci-003",
         prompt=prompt,
         temperature=0.7,
@@ -17,41 +17,41 @@ def generate_idea(wish):
         frequency_penalty=0,
         presence_penalty=0
     )
-    idea = response.choices[0].text.strip()
+    idea = respuesta.choices[0].text.strip()
     return idea
 
-# Define Streamlit app
+# Define la aplicación Streamlit
 def app():
-    st.title("Digital Startup Idea Generator")
+    st.title("Generador de Ideas de Startups Digitales")
 
-    # Ask for user input
-    user_wish = st.text_input("What do you wish for?")
+    # Pide la entrada del usuario
+    deseo_usuario = st.text_input("¿Qué es lo que deseas?")
 
-    if st.button("Generate Idea"):
-        # Generate startup idea using GPT
-        startup_idea = generate_idea(user_wish)
+    if st.button("Generar Idea"):
+        # Genera la idea de startup utilizando GPT
+        idea_startup = generar_idea(deseo_usuario)
 
-        # Format startup idea as a dataframe
+        # Formatea la idea de startup como un dataframe
         idea_df = pd.DataFrame({
-            "Idea Name": [startup_idea],
-            "Short Description": ["A digital startup that solves the user's pain points."],
-            "Target User Persona": ["[insert target user persona]"],
-            "User's Pain Points": ["[insert user's pain points to solve]"],
-            "Main Value Propositions": ["[insert main value propositions]"],
-            "Sales & Marketing Channels": ["[insert sales & marketing channels]"],
-            "Revenue Stream Sources": ["[insert revenue stream sources]"],
-            "Cost Structures": ["[insert cost structures]"],
-            "Key Activities": ["[insert key activities]"],
-            "Key Resources": ["[insert key resources]"],
-            "Key Partners": ["[insert key partners]"],
-            "Idea Validation Steps": ["[insert idea validation steps]"],
-            "Estimated 1st Year Cost of Operation": ["[insert estimated 1st year cost of operation]"],
-            "Potential Business Challenges": ["[insert potential business challenges to look for]"]
+            "Nombre de la Idea": [idea_startup],
+            "Descripción Corta": ["Una startup digital que resuelve los puntos débiles del usuario."],
+            "Persona Objetivo": ["[inserta la persona objetivo]"],
+            "Puntos Débiles del Usuario": ["[inserta los puntos débiles del usuario a resolver]"],
+            "Propuestas de Valor Principales": ["[inserta las propuestas de valor principales]"],
+            "Canales de Ventas y Marketing": ["[inserta los canales de ventas y marketing]"],
+            "Fuentes de Ingresos": ["[inserta las fuentes de ingresos]"],
+            "Estructuras de Costos": ["[inserta las estructuras de costos]"],
+            "Actividades Clave": ["[inserta las actividades clave]"],
+            "Recursos Clave": ["[inserta los recursos clave]"],
+            "Socios Clave": ["[inserta los socios clave]"],
+            "Pasos de Validación de la Idea": ["[inserta los pasos de validación de la idea]"],
+            "Costo Estimado del Primer Año de Operación": ["[inserta el costo estimado del primer año de operación]"],
+            "Desafíos Potenciales del Negocio": ["[inserta los desafíos potenciales del negocio a tener en cuenta]"]
         })
 
-        # Display startup idea as a markdown table
+        # Muestra la idea de startup como una tabla en markdown
         st.write(idea_df.to_markdown(index=False), unsafe_allow_html=True)
 
-# Run Streamlit app
+# Ejecuta la aplicación Streamlit
 if __name__ == '__main__':
     app()
